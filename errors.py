@@ -2,19 +2,22 @@
 import os
 import sys
 
-# LBYL - Look Before You Leap
+# EAFP - Easy to Ask Forgiveness than permission
+# (É mais fácil pedir perdão do que permissão)
 
-if os.path.exists("name.txt"):
-    print("O arquivo existe")
-    input("...") # Race Condition
-    names = open("names.txt").readlines()
-else:
-    print("[Error] File names.txt not found.")
+try:
+    names = open("names.txt").readlines() # FileNotFoundError
+except FileNotFoundError as e:
+    print(f"{str(e)}.")
     sys.exist(1)
+    # TODO: Usar retry
+else:
+    print("Sucesso!!!")
+finally:
+    print("Execute isso sempre!")
 
-
-if len(names) >= 3:
+try:
     print(names[2])
-else:
+except:
     print("[Error] Missing name in the list")
-    sys.exist(1)
+    sys.exit(1)
